@@ -34,7 +34,7 @@ export default {
     SystemFeedback () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/feedbackinfo', {
         phone: this.$store.state.phone,
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.SystemFeedbackSucc)
     },

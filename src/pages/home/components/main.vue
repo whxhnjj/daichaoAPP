@@ -8,40 +8,39 @@
         </li>
       </ul>
     </div>
-    <div class="hot">
+    <div class="hot" v-show="!loading">
       <p>
         <span><img class="hot-img" src="~assets/images/hot.png" alt=""></span>
         <span class="hot-size">热门贷款显示</span>
       </p>
     </div>
     <div v-for="(items, index) of main" :key="index">
+      <!-- 卡片开始 -->
       <div class="home-box" v-for="item of items" :key="item.id"  @click="ApplyBtn(item.urls)">
-        <img :src="item.logo"  alt="" />
-        <div class="home-list">
-          <div class="top-list">
-            <h5>{{item.title}}</h5>
-            <div class="num-tit"><i>{{item.hit}}</i>已放款</div>
-          </div>
-          <div class="top-line">
-              <span class="tit">额度范围（元）</span>
-              <span class="num">{{item.loan_limit}}</span>
-          </div>
-          <div class="center-line">
-            <span class="tit">贷款周期（天）</span>
-            <span class="num">{{item.loan_during}}</span>
-          </div>
-          <div class="right-line">
-            <span class="tit">参考利率</span>
-            <span class="num">{{item.loan_rate}}%</span>
+        <div class="home-container">
+          <img :src="item.logo"  alt="" />
+          <div class="home-list">
+            <div class="top-list">
+              <h5>{{item.title}}</h5>
+              <!-- <div class="num-tit"><i>{{item.hit}}</i>已放款</div> -->
+            </div>
+            <div class="moneylist">
+              <div class="num-tit">周期{{item.during}}天</div>
+              <div class="moneyDiv">
+                <p class="money">￥{{item.limit}}</p>
+              </div>
+            </div>
           </div>
         </div>
+        <div class="homefoot">
+          <p style="margin-right:0.06rem" v-for="(d,i) in item.label" :key="i">{{d}}</p>
+          <span class="already"><i>{{item.hit}}</i><span>人已放款</span></span>
+        </div>
       </div>
+      <!-- 卡片结束 -->
     </div>
-    <div v-show="showtit">
+    <div v-show="showtoast">
       <p class="notit"><img src="~assets/images/61542708710.jpg" alt=""></p>
-    </div>
-    <div v-show="loading" class="loading">
-      <img src="~assets/images/loading.gif" alt="">
     </div>
     <transition>
       <div class="screen-show-model" v-if="ishow">
@@ -60,7 +59,7 @@
 </template>
 <script>
 import axios from 'axios'
-let page = 1
+// let page = 1
 export default {
   name: 'HomeMain',
   data () {
@@ -75,54 +74,57 @@ export default {
         { text: '3万以上', isActive: false, id: '30000' }
       ],
       home: [],
-      main: [],
       ishow: '',
       showtit: false,
       msg: '',
-      loanKey: '',
-      loading: false,
+      appkey: '',
       ExternalUrl: ''
     }
+  },
+  props: {
+    main: Array,
+    showtoast: Boolean,
+    loading: Boolean
   },
   methods: {
     clickproa (position) {
       sessionStorage.setItem('position', position)
       // if (position === 3 || position === 4) {
-      //   // this.$router.push('/proa/' + this.$route.params.loanKey)
+      //   // this.$router.push('/proa/' + this.$route.params.appkey)
       //   const { href } = this.$router.resolve({
-      //     path: '/proa/' + this.$route.params.loanKey
+      //     path: '/proa/' + this.$route.params.appkey
       //   })
       //   let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
       //   window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
       // } else {
-      //   // this.$router.push('/rate/' + this.$route.params.loanKey)
+      //   // this.$router.push('/rate/' + this.$route.params.appkey)
       //   const { href } = this.$router.resolve({
-      //     path: '/rate/' + this.$route.params.loanKey
+      //     path: '/rate/' + this.$route.params.appkey
       //   })
       //   let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
       //   window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
       // }
       if (position === 3) {
         const { href } = this.$router.resolve({
-          path: '/proa/' + this.$route.params.loanKey
+          path: '/proa/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
       } else if (position === 4) {
         const { href } = this.$router.resolve({
-          path: '/proa1/' + this.$route.params.loanKey
+          path: '/proa1/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
       } else if (position === 5) {
         const { href } = this.$router.resolve({
-          path: '/rate/' + this.$route.params.loanKey
+          path: '/rate/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
       } else if (position === 6) {
         const { href } = this.$router.resolve({
-          path: '/rate1/' + this.$route.params.loanKey
+          path: '/rate1/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
@@ -130,7 +132,7 @@ export default {
     },
     roulebog () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/getscreen', {
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.minlistSucc)
     },
@@ -149,7 +151,7 @@ export default {
       })
       data.isActive = !data.isActive
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/index', {
-        loanKey: this.$route.params.loanKey,
+        appkey: this.$route.params.appkey,
         choose: data.id
       })
         .then(this.activeisSucc)
@@ -171,61 +173,62 @@ export default {
     screenBtn () {
       this.ishow = !this.ishow
     },
-    getMainInfo () {
-      axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/index', {
-        page: page++,
-        size: 5,
-        loanKey: this.$route.params.loanKey
-      })
-        .then(this.getMainInfoSucc)
-    },
-    getMainInfoSucc (res) {
-      res = res.data
-      if (res.code === 200) {
-        this.main.push(res.data.data)
-      }
-      if (JSON.stringify(res.data) === '{}') {
-        this.msg = res.msg
-        this.openBottom()
-      }
-      if (JSON.stringify(res.data) !== '{}') {
-        this.showtit = false
-      }
-    },
+    // getMainInfo () {
+    //   axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/index', {
+    //     page: page++,
+    //     size: 5,
+    //     appkey: this.$route.params.appkey
+    //   })
+    //     .then(this.getMainInfoSucc)
+    // },
+    // getMainInfoSucc (res) {
+    //   res = res.data
+    //   if (res.code === 200) {
+    //     this.main.push(res.data.data)
+    //   }
+    //   if (JSON.stringify(res.data) === '{}') {
+    //     this.msg = res.msg
+    //     this.openBottom()
+    //   }
+    //   if (JSON.stringify(res.data) !== '{}') {
+    //     this.showtit = false
+    //   }
+    // },
     openBottom () {
       this.$toast(this.msg)
     }
   },
   mounted () {
     this.showtit = false
-    this.getMainInfo()
+    // this.getMainInfo()
     this.roulebog()
   },
-  created () {
-    var self = this
-    window.onscroll = function () {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-      var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-      if (scrollTop + windowHeight === scrollHeight) {
-        self.loading = true
-        setTimeout(function () {
-          self.loading = false
-          self.getMainInfo()
-        }, 1000)
-      }
-      if (scrollTop < -100) {
-        window.location.reload()
-      }
-    }
-  },
+  // created () {
+  //   var self = this
+  //   window.onscroll = function () {
+  //     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+  //     var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+  //     var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+  //     if (scrollTop + windowHeight === scrollHeight) {
+  //       self.loading = true
+  //       setTimeout(function () {
+  //         self.loading = false
+  //         self.getMainInfo()
+  //       }, 1000)
+  //     }
+  //     if (scrollTop < -100) {
+  //       window.location.reload()
+  //     }
+  //   }
+  // },
   beforeDestroy () {
-    page = 1
+    // page = 1
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  @import '~assets/styles/varibles.styl'
   .mix
     padding .24rem .42rem 0 .42rem
     background #ffffff
@@ -233,8 +236,6 @@ export default {
     overflow hidden
     ul
       width 100%
-      display flex
-      justify-content space-between
     ul li
       float left
       width 25%
@@ -251,7 +252,7 @@ export default {
       display block
       text-align center
   .hot
-    padding 0.3rem 0.4rem
+    padding 0.3rem 0.4rem 0.2rem 0.4rem
     .hot-img
       width 0.3rem
     .hot-size
@@ -271,30 +272,35 @@ export default {
       height .28rem
       margin-left .1rem
   .home-box
-    margin 0 .25rem;
+    margin 0 .25rem
     height 100%
-    background #ffffff url("~assets/images/flow-right.png") no-repeat 96% center
+    background #ffffff
     background-size .17rem .34rem
-    padding .3rem .4rem .3rem .2rem
+    padding .2rem .18rem .18rem .16rem
     overflow hidden
-    box-shadow:0 0.04rem 0.2rem 0 rgba(198,198,198,0.18);
-    border-radius 0.18rem
-    margin-bottom 0.3rem
-    img
-      width 1.4rem
-      height 1.4rem
-      float left
-      display block
-      margin-right .1rem
-    .home-list
-      width 4.6rem;
-      float left
+    box-shadow 0 0.04rem 0.2rem 0 rgba(198,198,198,0.18)
+    border-radius 0.1rem
+    margin-bottom 0.2rem
+    .home-container
+      display flex
+      margin-bottom .14rem
+      flex-direction row
+      img
+        height 1.1rem
+        float left
+        display block
+        margin-right .22rem
+        border-radius .2rem
+      .home-list
+        width 100%
+        float left
       .top-list
-        width 100%;
-        height .42rem;
-        margin-bottom .2rem;
+        width 100%
+        height .42rem
+        margin-bottom .09rem
+        margin-top .1rem
         h5
-          width 2.1rem
+          width 50%
           color #333333
           font-size .32rem
           height .42rem
@@ -305,56 +311,41 @@ export default {
           white-space nowrap
           text-overflow ellipsis
           overflow hidden
+      .moneylist
+        display flex
         .num-tit
-          width 50%
-          height .42rem;
+          width 34%
+          height .42rem
           line-height .42rem
-          font-size .24rem
-          color #999999
-          float right
-          text-align right
-          i
-            color #FF6800
-      .top-line
-        width 100%
-        height .36rem
-        margin-bottom .1rem
-        .tit
-          font-size .24rem
-          color #999999
-          line-height .36rem
-        .num
-          color #FF6800
-          font-size .26rem
-          line-height .36rem
-      .center-line
-        width 55%
-        height .36rem
-        float left
-        .tit
-          font-size .24rem
-          color #999999
-          line-height .36rem
-        .num
-          color #333333
           font-size .28rem
-          line-height .36rem
-      .right-line
-        width 45%
-        height .34rem
-        display block
+          color #666
+          display inline-block
+        .moneyDiv
+          width 66%
+          color #FF9019
+          font-size .4rem
+          display inline-block
+          margin-top -.26rem
+          font-weight 700
+          p
+            text-align right
+    .homefoot
+      width 100%
+      p
+        display inline-block
+        font-size .22rem
+        color #666666
+        background #EDEDED
+        border-radius .08rem
+        padding .06rem .1rem
+      .already
         float right
-        text-align right
-        .tit
-          font-size .24rem
-          color #999999
-          line-height .34rem
-        .num
-          color #333333
-          font-size .26rem
-          line-height .34rem
-          height .28rem
-          margin-left .1rem
+        font-size .24rem
+        margin-top .05rem
+        i
+          color #37A8FD
+        span
+          color #333
   .hot-business
     width 85%
     height 2.75rem
@@ -446,6 +437,8 @@ export default {
       position absolute
       top 50%
       left 50%
+      -webkit-transform translate(-50%,-50%)
+      -moz-transform translate(-50%,-50%)
       transform translate(-50%, -50%)
       img
         width 100%
@@ -509,18 +502,5 @@ export default {
     font-size .36rem
     margin-top 1rem
     img
-      width 4rem
-  .loading
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 998;
-    background-color: rgba(0,0,0,.1);
-    img
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      width 3rem
 </style>

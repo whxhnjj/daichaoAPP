@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="tabfooter">
-      <router-link :to="'/home/'+loanKey" class="link" exact>
+      <router-link :to="'/home/'+appkey" class="link" exact>
         <div class="tab home">首页</div>
       </router-link>
-      <router-link :to="'/borrow/'+loanKey" class="link" >
+      <router-link :to="'/borrow/'+appkey" class="link" >
         <div class="tab borrow">借钱</div>
       </router-link>
-      <!--<router-link :to="'/recommend/'+loanKey" class="link">-->
+      <!--<router-link :to="'/recommend/'+appkey" class="link">-->
         <!--<div class="tab recommend">推荐</div>-->
       <!--</router-link>-->
-      <!--<router-link :to="'/my/'+loanKey" class="link">-->
+      <!--<router-link :to="'/my/'+appkey" class="link">-->
         <!--<div class="tab my">我的</div>-->
       <!--</router-link>-->
     </div>
@@ -22,11 +22,11 @@ export default {
   name: 'Navfooter',
   data () {
     return {
-      loanKey: []
+      appkey: []
     }
   },
   mounted () {
-    this.loanKey = this.$route.params.loanKey
+    this.appkey = this.$route.params.appkey
   }
 }
 </script>

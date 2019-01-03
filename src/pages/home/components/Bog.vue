@@ -28,7 +28,7 @@ export default {
   methods: {
     getMainInfo () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/winningData', {
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(function (res) {
           res = res.data
@@ -48,6 +48,7 @@ export default {
   .box
     width 100%
     height 100%
+    padding-top 3.5rem
     overflow hidden
     background #FFFFFF
     .tip

@@ -46,7 +46,7 @@ export default {
       }
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/user/reg_send', {
         phone: this.$store.state.phone,
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.VerificationSucc)
     },
@@ -60,7 +60,7 @@ export default {
     confirmBtn () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/user/register', {
         phone: this.$store.state.phone,
-        loanKey: this.$route.params.loanKey,
+        appkey: this.$route.params.appkey,
         code: this.$refs.code.value,
         password: this.$refs.password.value
       })

@@ -18,7 +18,7 @@ export default {
     feedback () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/feedback', {
         content: this.$refs.feedback.value,
-        loanKey: this.$route.params.loanKey,
+        appkey: this.$route.params.appkey,
         phone: this.$store.state.phone,
         client: 'wechat'
       })

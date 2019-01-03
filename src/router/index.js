@@ -5,28 +5,28 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/home/:loanKey',
+      path: '/home/:appkey',
       name: 'home',
       component: () => import('@/pages/home/Home'),
       meta: {
         title: '首页'
       }
     }, {
-      path: '/borrow/:loanKey',
+      path: '/borrow/:appkey',
       name: 'borrow',
       component: () => import('@/pages/borrow/Borrow'),
       meta: {
         title: '借钱'
       }
     }, {
-      path: '/recommend/:loanKey',
+      path: '/recommend/:appkey',
       name: 'recommend',
       component: () => import('@/pages/recommend/Recommend'),
       meta: {
         title: '推荐'
       }
     }, {
-      path: '/my/:loanKey',
+      path: '/my/:appkey',
       name: 'my',
       component: () => import('@/pages/my/My'),
       meta: {
@@ -68,28 +68,28 @@ export default new Router({
         title: '立即申请'
       }
     }, {
-      path: '/proa/:loanKey',
+      path: '/proa/:appkey',
       name: 'proa',
       component: () => import('@/pages/boxpro/proa'),
       meta: {
         title: '最新口子'
       }
     }, {
-      path: '/proa1/:loanKey',
+      path: '/proa1/:appkey',
       name: 'proa1',
       component: () => import('@/pages/boxpro/proa1'),
       meta: {
         title: '快速小额贷款'
       }
     }, {
-      path: '/rate/:loanKey',
+      path: '/rate/:appkey',
       name: 'rate',
       component: () => import('@/pages/boxpro/rate'),
       meta: {
         title: '大额秒批'
       }
     }, {
-      path: '/rate1/:loanKey',
+      path: '/rate1/:appkey',
       name: 'rate1',
       component: () => import('@/pages/boxpro/rate1'),
       meta: {

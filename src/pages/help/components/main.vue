@@ -30,7 +30,7 @@ export default {
   methods: {
     getMianIofo () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/help/list', {
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.getMianIofoSucc)
     },

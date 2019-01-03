@@ -34,7 +34,7 @@ export default {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/user/login', {
         phone: this.$store.state.phone,
         password: this.$refs.password.value,
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(function (res) {
           res = res.data

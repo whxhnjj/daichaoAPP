@@ -42,7 +42,7 @@ export default {
     CheckFeedbackClick () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/feedbackinfo', {
         phone: this.$store.state.phone,
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.CheckFeedbackSucc)
     },
@@ -58,7 +58,7 @@ export default {
     },
     PastUrl () {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/config', {
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.PastUrlSucc)
     },

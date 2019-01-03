@@ -60,7 +60,7 @@ export default {
         oldpassword: this.$refs.oldpw.value,
         password: this.$refs.newpw.value,
         password_confirm: this.$refs.conpw.value,
-        loanKey: this.$route.params.loanKey,
+        appkey: this.$route.params.appkey,
         token: this.$store.state.token
       })
         .then(this.changeSucc)

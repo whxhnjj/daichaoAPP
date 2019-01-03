@@ -31,7 +31,7 @@ export default {
       this.$store.commit('changePhone', phone)
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/user/checkphone', {
         phone: this.num,
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.getMainInfoSucc)
     },

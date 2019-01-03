@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 let defaultPhone = ''
 let defaultToken = ''
-let defaultLoanKey = ''
+let defaultappkey = ''
 try {
   if (localStorage.phone) {
     defaultPhone = localStorage.phone
@@ -17,8 +17,8 @@ try {
   }
 } catch (e) {}
 try {
-  if (localStorage.loankey) {
-    defaultLoanKey = localStorage.loankey
+  if (localStorage.appkey) {
+    defaultappkey = localStorage.appkey
   }
 } catch (e) {}
 
@@ -26,7 +26,7 @@ export default new Vuex.Store({
   state: {
     phone: defaultPhone,
     token: defaultToken,
-    loanKey: defaultLoanKey
+    appkey: defaultappkey
   },
   mutations: {
     changePhone (state, phone) {
@@ -41,10 +41,10 @@ export default new Vuex.Store({
         localStorage.token = token
       } catch (e) {}
     },
-    LoanKey (state, loankey) {
-      state.loankey = loankey
+    appkey (state, appkey) {
+      state.appkey = appkey
       try {
-        localStorage.loankey = loankey
+        localStorage.appkey = appkey
       } catch (e) {}
     }
   }

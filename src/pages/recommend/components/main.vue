@@ -7,9 +7,9 @@
           <span class="name">{{item.title}}</span>
         </div>
         <div class="list-right border-left">
-          <div class="num border-bottom">{{item.loan_limit}}元</div>
-          <span class="num-left">贷款周期<i>{{item.loan_during}}天</i></span>
-          <span class="num-right">日费率<i>{{item.loan_rate}}%</i></span>
+          <div class="num border-bottom">{{item.limit}}元</div>
+          <span class="num-left">贷款周期<i>{{item.during}}天</i></span>
+          <span class="num-right">日费率<i>{{item.rate}}%</i></span>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@ export default {
   methods: {
     ApplyBtn (id) {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/hit', {
-        loanKey: this.$route.params.loanKey,
+        appkey: this.$route.params.appkey,
         product_id: id,
         client: 'wechat',
         openid: sessionStorage.getItem('openid')
@@ -54,7 +54,7 @@ export default {
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/recomend', {
         page: page++,
         size: 10,
-        loanKey: this.$route.params.loanKey
+        appkey: this.$route.params.appkey
       })
         .then(this.getRecommendInfoSucc)
     },
