@@ -2,7 +2,7 @@
   <div class="main">
     <div class="mix">
       <ul>
-        <li v-for="(item, index) in home" :key="index" @click="clickproa(item.position)">
+        <li v-for="(item, index) in home" :key="index" @click="clickproa(item.position,item.type)">
           <img :src="item.url" />
           <span>{{item.name}}</span>
         </li>
@@ -87,7 +87,7 @@ export default {
     loading: Boolean
   },
   methods: {
-    clickproa (position) {
+    clickproa (position, type) {
       sessionStorage.setItem('position', position)
       // if (position === 3 || position === 4) {
       //   // this.$router.push('/proa/' + this.$route.params.appkey)
@@ -104,25 +104,25 @@ export default {
       //   let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
       //   window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
       // }
-      if (position === 3) {
+      if (type === 3) {
         const { href } = this.$router.resolve({
           path: '/proa/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
-      } else if (position === 4) {
+      } else if (type === 4) {
         const { href } = this.$router.resolve({
           path: '/proa1/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
-      } else if (position === 5) {
+      } else if (type === 5) {
         const { href } = this.$router.resolve({
           path: '/rate/' + this.$route.params.appkey
         })
         let jUrl = this.GLOBAL.ajaxurl + 'appv1/' + href
         window.location.href = 'micang://blank?url=' + encodeURIComponent(jUrl)
-      } else if (position === 6) {
+      } else if (type === 6) {
         const { href } = this.$router.resolve({
           path: '/rate1/' + this.$route.params.appkey
         })

@@ -90,7 +90,7 @@ export default {
       this.showtit = false
       this.showtitbox = false
       axios.post(this.GLOBAL.ajaxurl + 'api/v1/product/getList', {
-        position: 4,
+        position: sessionStorage.getItem('position'),
         appkey: this.$route.params.appkey,
         size: 8,
         page: page++
